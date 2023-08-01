@@ -1,0 +1,53 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    accepting_tasks BOOLEAN NOT NULL DEFAULT true
+);
+
+CREATE TABLE teams (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(250)
+);
+
+CREATE TABLE users_teams (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    team_id INT REFERENCES teams(id)
+);
+
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    priority INT NOT NULL DEFAULT 2 CHECK (priority IN (1, 2, 3, 4)),
+    created_at TIMESTAMP WITH TIME ZONE,
+    due_at TIMESTAMP WITH TIME ZONE,
+    description VARCHAR(250),
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE steps (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    priority INT NOT NULL DEFAULT 2 CHECK (priority IN (1, 2, 3, 4)),
+    created_at TIMESTAMP WITH TIME ZONE,
+    due_at TIMESTAMP WITH TIME ZONE,
+    description VARCHAR(250),
+    completed_at TIMESTAMP WITH TIME ZONE,
+    task_id INT REFERENCES tasks(id),
+    user_id INT REFERENCES users(id)
+);
+
+CREATE TABLE users_tasks (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    task_id INT REFERENCES tasks(id)
+);
+
+CREATE TABLE teams_tasks (
+    id SERIAL PRIMARY KEY,
+    team_id INT REFERENCES teams(id),
+    task_id INT REFERENCES tasks(id)
+);
