@@ -49,5 +49,7 @@ CREATE TABLE users_tasks (
 CREATE TABLE teams_tasks (
     id SERIAL PRIMARY KEY,
     team_id INT REFERENCES teams(id),
-    task_id INT REFERENCES tasks(id)
+    task_id INT REFERENCES tasks(id),
+    CONSTRAINT unique_team_task_pair UNIQUE (team_id, task_id)
+
 );
