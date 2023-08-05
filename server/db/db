@@ -36,8 +36,8 @@ CREATE TABLE steps (
     due_at TIMESTAMP WITH TIME ZONE,
     description VARCHAR(250),
     completed_at TIMESTAMP WITH TIME ZONE,
-    task_id INT REFERENCES tasks(id),
-    user_id INT REFERENCES users(id)
+    task_id INT REFERENCES tasks(id) NOT NULL,
+    user_id INT REFERENCES users(id) NOT NULL
 );
 
 CREATE TABLE users_tasks (
