@@ -5,24 +5,24 @@ const tasks = require("./routes/tasks");
 const ErrorHandler = require("./middleware/ErrorHandler");
 const catchAsync = require("./middleware/catchAsync");
 const cors = require("cors");
-const db = require("./db/db");
-app.set("db", db); //providing one global connection to the database for more efficient connection pooling,
-// rather than importing it separately in every route handler.
+const db = require("./db");
 
-winston.add(winston.transports.File, { filename: "serverLog.log" });
+// winston.add(winston.transports.File, { filename: "serverLog.log" });
 
 const app = express();
 const port = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
+app.set("db", db); //providing one global connection to the database for more efficient connection pooling,
+// rather than importing it separately in every route handler.
 
 app.use("/api/v1/tasks", tasks);
 
-// Handling the errors via the ErrorHandler:
-process.on("uncaughtException", (err) => {
-  console.log("THERE IS AN UNCAUGHT EXCEPTION.");
-  winston.log("error", err.message);
-});
+// // Handling the errors via the ErrorHandler:
+// process.on("uncaughtException", (err) => {
+//   console.log("THERE IS AN UNCAUGHT EXCEPTION.");
+//   winston.log("error", err.message);
+// });
 
 // Database shutdown on application exit
 process.on("SIGINT", async () => {

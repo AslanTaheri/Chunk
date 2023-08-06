@@ -11,6 +11,7 @@ router.get(
   "/",
   catchAsync(async (req, res) => {
     try {
+      const db = req.app.get("db"); // Access the database connection from the app object
       const tasks = await db.query(
         `
         SELECT tasks.* 
@@ -18,7 +19,7 @@ router.get(
         JOIN users_tasks ON users_tasks.task_id = tasks.id 
         WHERE users_tasks.user_id = $1;
         `,
-        [userId]
+        [(userId = 2)]
       );
       res.status(200).json({ tasks: tasks.rows });
     } catch (err) {
@@ -27,11 +28,12 @@ router.get(
   })
 );
 
-// /tasks/:taskId : get a specific task.
+// Get a specific task.
 router.get(
   "/:taskId",
   catchAsync(async (req, res) => {
     try {
+      const db = req.app.get("db"); // Access the database connection from the app object
       const task = await db.query(
         `
         SELECT tasks.*
@@ -40,7 +42,7 @@ router.get(
         WHERE tasks.id = $1
         AND users_tasks.user_id = $2;
         `,
-        [req.params.taskId, userId]
+        [req.params.taskId, (userId = 1)]
       );
       res.status(200).json({ task: task.rows[0] });
     } catch (err) {
@@ -48,8 +50,49 @@ router.get(
     }
   })
 );
-// /tasks/:taskId/steps : list of steps for a specific task
+// List of steps for a specific task
+router.get(
+  "/:taskId/steps",
+  catchAsync(async (req, res) => {
+    try {
+      const db = req.app.get("db"); // Access the database connection from the app object
+      const steps = await db.query(
+        `
+        SELECT steps.*
+        FROM steps
+        WHERE task_id = $1
+        AND user_id = $2;
+        `,
+        [req.params.taskId, (userId = 1)]
+      );
+      res.status(200).json({ task: steps.rows });
+    } catch (err) {
+      console.log(err);
+    }
+  })
+);
 
-// /tasks/:taskId/steps/:stepId : a specific step of a task
+// A specific step of a task
+router.get(
+  "/:taskId/steps/:stepId",
+  catchAsync(async (req, res) => {
+    try {
+      const db = req.app.get("db"); // Access the database connection from the app object
+      const step = await db.query(
+        `
+        SELECT steps.*
+        FROM steps
+        WHERE task_id = $1
+        AND id = $2
+        AND user_id = $3;
+        `,
+        [req.params.taskId, req.params.stepId, (userId = 1)]
+      );
+      res.status(200).json({ task: step.rows[0] });
+    } catch (err) {
+      console.log(err);
+    }
+  })
+);
 
 module.exports = router;

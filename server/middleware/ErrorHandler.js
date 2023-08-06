@@ -1,6 +1,6 @@
 const winston = require("winston");
 
-class ErrorHandler extends Error {
+class AppError extends Error {
   constructor(message, status) {
     super();
     this.message = message;
@@ -16,4 +16,4 @@ const error = (err, req, res, next) => {
   res.status(status).json(message);
 };
 
-module.exports = ErrorHandler;
+module.exports = AppError;
