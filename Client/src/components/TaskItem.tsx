@@ -1,5 +1,17 @@
+import ButtonChunk from "./ButtonChunk";
+import PriorityCheckBox from "./PriorityCheckBox";
+import ProgressBar from "./ProgressBar";
+
 const TaskItem = (props) => {
-  return <></>;
+  return (
+    <>
+      <PriorityCheckBox />
+      <section>{props.name}</section>
+      <ProgressBar />
+      <section>{props.dueDate}</section>
+      <ButtonChunk />
+    </>
+  );
 };
 
 export default TaskItem;
