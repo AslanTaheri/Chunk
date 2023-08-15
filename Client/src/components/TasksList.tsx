@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TaskItem from "./TaskItem";
 
-export const Task = () => {
+export const TasksList = () => {
   const getTasks = axios.create({
     baseURL: "http://localhost:5000/api/v1/tasks",
   });

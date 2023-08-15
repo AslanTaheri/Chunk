@@ -1,4 +1,4 @@
-import ButtonChunk from "./ButtonChunk";
+import ButtonChunk from "./buttons/ButtonChunk";
 import PriorityCheckBox from "./PriorityCheckBox";
 import ProgressBar from "./ProgressBar";
 
